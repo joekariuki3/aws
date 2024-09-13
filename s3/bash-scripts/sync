@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# exit immediately if any command returns a non-zero status
+set -e
+
+echo "== sync"
+
+# where we will store these files
+OUTPUT_DIR="/temp/s3-bash-scripts"
+
+# if OUTPUT_DIR folder exists remove it 1st
+sudo rm -r $OUTPUT_DIR
+
+# create the folder
+sudo mkdir -p $OUTPUT_DIR
+
+# generate random numbers to determine how many files to reate
+NUM_FILES=$((RANDOM % 6 + 5))
+
+for((i=1; i<=$NUM_FILES; i++)); do
+	# generate random file name
+	FILENAME="$OUTPUT_DIR/file_$i.txt"
+
+	# Generate random data and write it to the file
+	dd if=/dev/urandom of="$FILENAME" bs=1024 count$((RANDOM % 1024 + 1)) 2>/dev/null
+done
+
+tree $OUTPUT_DIR
