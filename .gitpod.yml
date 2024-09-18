@@ -12,3 +12,4 @@ tasks:
       unzip awscliv2.zip
       sudo ./aws/install
       cd /workspace/aws_SAA
+      clear
