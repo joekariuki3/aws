@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 # Import required gems
 require 'aws-sdk-s3' # AWS SDK for s3 operations
 require 'pry' # Interactive shell for debugging
