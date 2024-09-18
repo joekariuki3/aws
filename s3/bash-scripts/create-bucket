@@ -2,7 +2,7 @@
 
 # Check for bucket name
 if [ -z "$1" ]; then
-    echo "There need to be a bucket name e.g ./backet my-bucket-name"
+    echo "There need to be a bucket name e.g $0 my-bucket-name"
     exit 1
 fi
 BUCKET_NAME=$1
