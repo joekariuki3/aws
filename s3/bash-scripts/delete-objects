@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# exit immediately if any command returns a non-zero status
+set -e
+
+echo "== delete-objects"
+
+# Check for bucket name
+if [ -z "$1" ]; then
+    echo "There need to be a bucket name e.g $0 my-bucket-name"
+    exit 1
+fi
+# bucketname
+BUCKET_NAME=$1
+
+OBJECT_KEY=$(basename "$FILENAME")
+TO_DELETE_DIR='todelete/'
+TO_DELETE_FILE='object_names.json'
+
+# if OUTPUT_DIR folder exists remove it first
+if [ -d "$TO_DELETE_DIR" ]; then
+    rm -r -R "$TO_DELETE_DIR"
+fi
+
+# create the folder
+mkdir -p "$TO_DELETE_DIR"
+touch $TO_DELETE_DIR/$TO_DELETE_FILE
+
+aws s3api list-objects-v2 \
+--bucket $BUCKET_NAME \
+--query Contents[].Key \
+| jq -n '{Objects: [inputs | .[] | {Key: .}]}' > $TO_DELETE_DIR/$TO_DELETE_FILE
+
+aws s3api delete-objects --bucket $BUCKET_NAME --delete file://$TO_DELETE_DIR/$TO_DELETE_FILE
