@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# exit immediately if any command returns a non-zero status
+set -e
+
+echo "== Newest bucket"
+
+# aws s3 ls
+# list newest bucket
+aws s3api list-buckets | jq -r '.Buckets | sort_by(.CreationDate) | reverse | .[0:1]| .[] | .Name'

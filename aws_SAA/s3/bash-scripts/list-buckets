@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# exit immediately if any command returns a non-zero status
+set -e
+
+echo "== List buckets"
+
+# aws s3 ls
+# list buckets us jq to filter only the newest five buckets
+aws s3api list-buckets | jq -r '.Buckets | sort_by(.CreationDate) | reverse | .[0:5]| .[] | .Name'
